@@ -371,6 +371,9 @@ Outputs land in `outputs/metrics.json`, `outputs/forecast.csv`, and
 `outputs/figures/*.png`. All settings (country, date range, target variant,
 CV parameters) live in `config.yaml` — change them there, not in code.
 
+**Interactive companions** (optional, same underlying `src/` code — see
+below): `notebooks/01_eda.ipynb` and `notebooks/02_modeling_and_evaluation.ipynb`.
+
 ### Repository structure
 ```
 ├── README.md
@@ -383,6 +386,9 @@ CV parameters) live in `config.yaml` — change them there, not in code.
 │   ├── validation/       # metrics, walk-forward CV / hold-out split
 │   ├── pipeline.py       # end-to-end orchestration
 │   └── utils.py
+├── notebooks/
+│   ├── 01_eda.ipynb                     # exploratory analysis & visualizations
+│   └── 02_modeling_and_evaluation.ipynb # CV / hold-out / forecast, interactively
 ├── data/
 │   ├── raw/              # gitignored: daily GDELT cache, combined raw parquet, trends cache, download manifest
 │   └── processed/        # weekly_panel.{parquet,csv}, feature_panel.{parquet,csv}
@@ -390,4 +396,30 @@ CV parameters) live in `config.yaml` — change them there, not in code.
     ├── metrics.json
     ├── forecast.csv
     └── figures/
+```
+
+### Notebooks
+
+Both notebooks **import functions directly from `src/`** (no logic
+duplication), so they can never drift out of sync with the batch pipeline —
+they exist purely to make the analysis and results interactively explorable
+and more visual than the CLI/log output of `python -m src.pipeline`.
+
+- **`01_eda.ipynb`**: full-history conflict-count plot with escalation flags
+  and data-quality markers, regime comparison (pre/post 2022-shock
+  distributions), tone/sentiment trends, news-volume & Google Trends overlays,
+  ACF/PACF (explains why a persistence baseline is strong), calendar effects,
+  the `days_covered` data-quality audit, a feature-correlation heatmap, and
+  target/label distributions.
+- **`02_modeling_and_evaluation.ipynb`**: runs the same walk-forward CV,
+  hold-out evaluation, and future forecast as `python -m src.pipeline`, plus
+  extras the batch script doesn't produce — a stitched out-of-fold prediction
+  trace across all 44 CV folds, per-horizon hold-out plots for all 4
+  horizons, and XGBoost feature-importance charts.
+
+Both are pre-executed (outputs saved in the committed `.ipynb`), and can be
+regenerated with:
+```bash
+jupyter nbconvert --to notebook --execute --inplace notebooks/01_eda.ipynb
+jupyter nbconvert --to notebook --execute --inplace notebooks/02_modeling_and_evaluation.ipynb
 ```
