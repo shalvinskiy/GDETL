@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# raw data is large & re-downloadable -> not committed, but keep folder structure
+data/raw/gdelt_daily/*
+!data/raw/gdelt_daily/.gitkeep
+data/raw/gdelt_ukraine_events_raw.parquet
+# download_manifest.json and the small Google Trends cache ARE committed
+# (small, valuable data-lineage / reproducibility evidence)
+
+# local env
+.venv/
+venv/
+.env
+
+# OS
+.DS_Store

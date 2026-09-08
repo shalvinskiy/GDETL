@@ -1,0 +1,9 @@
+country,forecast_week,horizon,target_type,predicted_value,predicted_prob,ci_lower,ci_upper,model
+Ukraine,2026-W37,1,count,1856.9,,1412.7,2568.0,xgboost
+Ukraine,2026-W37,1,event,,0.01,0.01,0.02,xgboost
+Ukraine,2026-W38,2,count,1836.0,,1320.7,3115.2,xgboost
+Ukraine,2026-W38,2,event,,0.01,0.01,0.02,xgboost
+Ukraine,2026-W39,3,count,1901.3,,1452.6,3237.3,xgboost
+Ukraine,2026-W39,3,event,,0.01,0.01,0.02,xgboost
+Ukraine,2026-W40,4,count,1849.6,,1578.3,3384.3,xgboost
+Ukraine,2026-W40,4,event,,0.01,0.01,0.02,xgboost
