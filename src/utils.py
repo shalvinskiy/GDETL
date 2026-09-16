@@ -1,4 +1,4 @@
-"""Shared helpers: config loading, path resolution, ISO-week utilities."""
+"""Config, paths, ISO-week helpers."""
 from __future__ import annotations
 
 import datetime as dt
@@ -11,20 +11,17 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
-def load_config(path: str | Path = None) -> dict[str, Any]:
+def load_config(path: str | Path | None = None) -> dict[str, Any]:
     path = Path(path) if path else REPO_ROOT / "config.yaml"
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
 def repo_path(*parts: str) -> Path:
-    """Resolve a path relative to the repo root, creating parent dirs as needed."""
-    p = REPO_ROOT.joinpath(*parts)
-    return p
+    return REPO_ROOT.joinpath(*parts)
 
 
 def week_start_monday(date: dt.date | dt.datetime | str) -> dt.date:
-    """Return the Monday that starts the ISO week containing `date`."""
     if isinstance(date, str):
         date = dt.datetime.strptime(date, "%Y%m%d" if len(date) == 8 else "%Y-%m-%d").date()
     elif isinstance(date, dt.datetime):
@@ -47,7 +44,7 @@ def daterange(start: dt.date, end: dt.date):
 def read_json(path: Path) -> dict:
     if not Path(path).exists():
         return {}
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)
 
 

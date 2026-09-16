@@ -1,45 +1,37 @@
-# ============================================================================
-# Central configuration for the GDELT conflict-escalation forecasting pipeline
-# Every script reads from this file so the whole pipeline is reproducible by
-# changing values in ONE place.
-# ============================================================================
-
 country:
-  name: "Ukraine"
-  gdelt_code: "UP"          # GDELT ActionGeo_CountryCode (FIPS 10-4), NOT ISO-2 ("UA")
+  name: Yemen
+  gdelt_code: YM          # FIPS 10-4, не ISO-2 (YE)
+  iso2: YE
 
 event:
-  root_codes: ["18", "19"]   # 18 = Assault, 19 = Fight (CAMEO root codes)
+  root_codes: ["18", "19"]  # CAMEO: Assault / Fight
 
 data:
-  start_date: "2022-01-01"   # >= 2 years history required; Ukraine has dense signal since 2022
-  end_date: "2026-09-07"     # last full ISO week before "today" in this run
+  start_date: "2022-01-01"
+  end_date: "2026-09-13"
   gdelt_bulk_base_url: "https://data.gdeltproject.org/events/"
   raw_daily_dir: "data/raw/gdelt_daily"
-  raw_combined_path: "data/raw/gdelt_ukraine_events_raw.parquet"
+  raw_combined_path: "data/raw/gdelt_yemen_events_raw.parquet"
   trends_cache_path: "data/raw/trends/google_trends_weekly.csv"
   weekly_panel_path: "data/processed/weekly_panel.parquet"
   download_manifest_path: "data/raw/download_manifest.json"
 
 external_regressor:
-  source: "google_trends"
-  keyword: "Ukraine war"
-  geo: ""                    # worldwide search interest
+  source: google_trends
+  keyword: "Yemen war"
+  geo: ""
 
 target:
-  # Variant A (regression, primary) -- recommended for middle-level roles.
-  variant: "A"
-  horizons: [1, 2, 3, 4]      # weeks ahead, direct multi-horizon models
-  strategy: "direct"          # one model per horizon (vs. "recursive")
-  # Variant B (classification) is ALSO produced as a secondary/bonus output,
-  # reusing the same features, to cover both output formats from the brief.
+  variant: A                 # регрессия, вариант B считается рядом как bonus
+  horizons: [1, 2, 3, 4]
+  strategy: direct
   escalation_rolling_window_weeks: 52
-  escalation_zscore_k: 2.0    # threshold = rolling_mean_52w + k * rolling_std_52w
+  escalation_zscore_k: 2.0
 
 validation:
-  holdout_weeks: 12           # never touched during feature scaling / training / CV
-  cv_initial_train_weeks: 52  # first walk-forward training window size
-  cv_step_weeks: 4            # step size between successive walk-forward folds
+  holdout_weeks: 12
+  cv_initial_train_weeks: 52
+  cv_step_weeks: 4
   min_test_weeks_per_fold: 4
 
 random_seed: 42
