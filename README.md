@@ -36,15 +36,6 @@ target_count_h{h} = conflict_count_week(t + h),  h ∈ {1, 2, 3, 4}
 
 Одна модель на горизонт. Recursive не делал: 4 шага, незачем копить ошибку h=1.
 
-**Вариант B** — рядом, потому что в примере `forecast.csv` есть и `count`, и `event`:
-
-```
-threshold_t = rolling_mean_52w(до t-1) + 2 * rolling_std_52w(до t-1)
-escalation_event_t = 1[ conflict_count_week(t) > threshold_t ]
-```
-
-Окно без текущей недели, чтобы спайк не поднимал сам себе порог.
-
 ## 3. Пайплайн
 
 ```
